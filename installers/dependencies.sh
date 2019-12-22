@@ -1,28 +1,16 @@
 #!/usr/bin/env bash
 
 # Magic Mirror
-# Module: Hello-Lucy
+# Module: MMM-VoiceControlMe
 #
+# Edited, modified and extended by @TheStigh, @Mykle1 and @sdetweil
+# https://github.com/mykle1/MMM-VoiceControlMe
+#
+# Based on fewieden https://github.com/fewieden/MMM-voice
 # MIT Licensed.
 
-
-clear
 echo -e "\e[0m"
-echo " __    __            __  __                  __                                    ";
-echo "|  \  |  \          |  \|  \                |  \                                   ";
-echo "| $$  | $$  ______  | $$| $$  ______        | $$      __    __   _______  __    __ ";
-echo "| $$__| $$ /      \ | $$| $$ /      \       | $$     |  \  |  \ /       \|  \  |  \";
-echo "| $$    $$|  $$$$$$\| $$| $$|  $$$$$$\      | $$     | $$  | $$|  $$$$$$$| $$  | $$";
-echo "| $$$$$$$$| $$    $$| $$| $$| $$  | $$      | $$     | $$  | $$| $$      | $$  | $$";
-echo "| $$  | $$| $$$$$$$$| $$| $$| $$__/ $$      | $$_____| $$__/ $$| $$_____ | $$__/ $$";
-echo "| $$  | $$ \$$     \| $$| $$ \$$    $$      | $$     \\$$    $$ \$$     \ \$$    $$";
-echo " \$$   \$$  \$$$$$$$ \$$ \$$  \$$$$$$        \$$$$$$$$ \$$$$$$   \$$$$$$$ _\$$$$$$$";
-echo "                                                                         |  \__| $$";
-echo "                                                                          \$$    $$";
-echo "                                                                           \$$$$$$ ";
-
-echo -e "\e[0m"
-echo '  INSTALLING DEPENDENCIES FOR Hello-Lucy'
+echo '  Installing dependencies for Hello-Lucy...This may take a while on a Pi'
 echo -e "\e[0m"
 
 
