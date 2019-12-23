@@ -96,8 +96,8 @@ else
 fi
 
 # modifying installed PocketSphinx
-    echo -e "\e[32mModifying pocketsphinx | Done\e[0m"
-cp psc/*.* node_modules/pocketsphinx-continuous/
+#    echo -e "\e[32mModifying pocketsphinx | Done\e[0m"
+# cp psc/*.* node_modules/pocketsphinx-continuous/
 
 
 # displaying audio devices
