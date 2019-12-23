@@ -74,15 +74,15 @@ PocketSphinxContinuous.prototype.start = function() {
   }
 };
 
-// PocketSphinxContinuous.prototype.stop = function() {
-//   if (this.isListening()) {
-//     this._psc.kill();
-//   }
-// };
-//
-// PocketSphinxContinuous.prototype.isListening = function() {
-//   return this._psc && !this._psc.killed;
-// };
+PocketSphinxContinuous.prototype.stop = function() {
+  if (this.isListening()) {
+    this._psc.kill();
+  }
+};
+
+PocketSphinxContinuous.prototype.isListening = function() {
+  return this._psc && !this._psc.killed;
+};
 
 util.inherits(PocketSphinxContinuous, EventEmitter);
 
