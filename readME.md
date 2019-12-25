@@ -63,9 +63,9 @@ config: {
 |  |  | 'HIDE' |  hide all module content, if display is on EnergyStar device that shows ugly 'no signal' screen for the other two choices |
 | `startHidden` | true/false | whether at MagciMirror startup to hide all modules and show image | default=true |
 
-
 ## How to add any module you want for use with Hello-Lucy
-* You can ask me to add them for you or follow the example directions below
+* You can ask me to add them for you or follow the example directions below.
+* If you are not comfortable modifying files it's best that I do it. :-)
 
 As of right now you have to make additions to 2 files in the Hello-Lucy folder.
 (1) sentences.json file.
@@ -83,4 +83,51 @@ Example: Add your commands to the modOp array:
 * The command word after HIDE or SHOW can be any word you like.
 * The module you name in "moduleName" will now be controlled by Hello-LUCY
 
-### Future upgrades for Hello_Lucy will eliminate the need for any modifications by the user (that's you)
+### Future upgrades for Hello_Lucy will eliminate the need for any modifications by the user (That's you)
+
+## Modules below that work by default
+### Note: I can add modules for you. Usually, in less than 24 hours.
+
+* alert
+* MMM-EasyBack
+* calendar
+* MMM-CARDS
+* MMM-Census
+* clock
+* MMM-Glock
+* MMM-Cocktails
+* compliments
+* MMM-EARTH
+* MMM-EarthWinds
+* MMM-Events
+* MMM-EyeCandy
+* MMM-Fortune
+* MMM-Gas
+* MMM-History
+* MMM-Astro
+* MMM-Insults
+* MMM-JEOPARDY
+* MMM-LICE
+* MMM-Lottery
+* MMM-EasyPix
+* MMM-MARS
+* MMM-Lunartic
+* MMM-NASA
+* newsfeed
+* MMM-PetFinder
+* MMM-PilotWX
+* MMM-FMI
+* MMM-DailyQuotes
+* MMM-ToDoLive
+* MMM-AfterShip
+* MMM-ISS
+* MMM-ISS-Live
+* MMM-PC-Stats
+* MMM-SoundMachine
+* MMM-SunRiseSet
+* MMM-SORT
+* MMM-EventHorizon
+* MMM-ATM
+* Hello-Lucy
+* MMM-BMW-DS
+* MMM-NOAA3
