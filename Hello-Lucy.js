@@ -41,17 +41,17 @@ Module.register(ModuleName, {
 	previouslyHidden: [],                           /** @member - keep list of modules already hidden when sleep occurs */
 
 	defaults: {
-		timeout: 10,                                // timeout listening for a command/sentence
-		defaultOnStartup: "Hello-Lucy",     // keep this so this module always are present on MM
+		timeout: 15,                                // time listening for a command/sentence when mic pulsing
+		defaultOnStartup: "Hello-Lucy",
 		keyword: "HELLO LUCY",                      // keyword to activate listening for a command/sentence
-		debug: false,                               // get debug information in console
 		standByMethod: "DPMS",                      // 'DPMS' = anything else than RPi or 'PI'
-		    sounds: [""],                  // welcomesound at startup, add several for a random choice of welcome sound
-		startHideAll: false,                         // if true, all modules start as hidden
-		microphone: "default",                      // Do NOT change, is read from ~/.asoundrc
+		sounds: ["a.mp3",  "b.mp3",  "c.mp3" , "d.mp3"], // welcome sounds at startup randomly choice of welcome sound
+		startHideAll: false,                        // if true, all modules start as hidden
+		microphone: "default",  // Do * NOT * change, is read from ~/.asoundrc
 		speed: 1000,                                // transition speed between show/no-show/show in milliseconds
-	    	pageOneModules: ["Hello-Lucy"],    // default modules to show on page one/startup
-		pageTwoModules: [],                         // modules to show on page two
+		    defaultOnStartup: "Hello-Lucy",
+	    	pageOneModules: ["Hello-Lucy"],         // default modules to show on page one/startup
+		    pageTwoModules: [],                         // modules to show on page two
     		pageThreeModules: [],                       // modules to show on page two
     		pageFourModules: [],                        // modules to show on page two
     		pageFiveModules: [],                        // modules to show on page two
@@ -60,7 +60,8 @@ Module.register(ModuleName, {
     		pageEightModules: [],                       // modules to show on page two
     		pageNineModules: [],                        // modules to show on page two
     		pageTenModules: [],                          // modules to show on page two
-		sounds: [ "a.mp3",  "b.mp3",  "c.mp3" , "d.mp3"]
+		    sounds: [ "a.mp3",  "b.mp3",  "c.mp3" , "d.mp3"],
+				debug: false,                               // get debug information in console
 	},
 
 	poweredOff: false,
@@ -141,16 +142,13 @@ Module.register(ModuleName, {
 		} else if (notification === "REGISTER_VOICE_MODULE") {
 			if (Object.prototype.hasOwnProperty.call(payload, "mode") && Object.prototype.hasOwnProperty.call(payload, "sentences")) {
 				this.modules.push(payload);
-			}
-
-		// add handlers for notifications from other modules
-			// did some other module  say they were done with the mic
 		}
+		}
+
 		if (notification === "DOM_OBJECTS_CREATED") {
 				 var audio_files = this.config.sounds;
 				 var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
 				 var audio = new Audio(localPath+"/sounds/"+random_file);
-				// audio.src = localPath+"/sounds/"+random_file;
 				 audio.play();
 		}
 
@@ -199,6 +197,11 @@ Module.register(ModuleName, {
 
 		} else if (notification === "LISTENING") {
 			this.pulsing = true;
+	  // audible confirmation sound that Lucy is listening
+	 	var audio_files = this.config.sounds;
+	 	var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+	 	var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+	 	audio.play();
 
 		} else if (notification === "SLEEPING") {
 			this.pulsing = false;
@@ -240,7 +243,6 @@ Module.register(ModuleName, {
 			hide.enumerate(function(module) {
 				Log.log("Hide "+ module.name);
 				var callback = function(){};
-				//var options = {lockString: self.identifier};
 				module.hide(self.config.speed, callback);
 			});
 
@@ -248,7 +250,6 @@ Module.register(ModuleName, {
 			show.enumerate(function(module) {
 				Log.log("Show "+ module.name);
 				var callback = function(){};
-				//var options = {lockString: self.identifier};
 				module.show(self.config.speed, callback);
 			});
 
@@ -261,24 +262,24 @@ Module.register(ModuleName, {
 
 	appendHelp(appendTo) {
 		const title = document.createElement("h1");
-		title.classList.add("xsmall"); // was medium @ Mykle
+		title.classList.add("xsmall");
 		title.innerHTML = `${this.name} - ${this.translate("COMMAND_LIST")}`;
 		appendTo.appendChild(title);
 
 		const mode = document.createElement("div");
-		mode.classList.add("xsmall"); // added @ Mykle
+		mode.classList.add("xsmall");
 		mode.innerHTML = `${this.translate("MODE")}: ${this.voice.mode}`;
 		appendTo.appendChild(mode);
 
 		const listLabel = document.createElement("div");
-		listLabel.classList.add("xsmall"); // added @ Mykle
+		listLabel.classList.add("xsmall");
 		listLabel.innerHTML = `${this.translate("VOICE_COMMANDS")}:`;
 		appendTo.appendChild(listLabel);
 
 		const list = document.createElement("ul");
 		for (let i = 0; i < this.voice.sentences.length; i += 1) {
 			const item = document.createElement("li");
-			list.classList.add("xsmall"); // added @ Mykle
+			list.classList.add("xsmall");
 			item.innerHTML = this.voice.sentences[i];
 			list.appendChild(item);
 		}
