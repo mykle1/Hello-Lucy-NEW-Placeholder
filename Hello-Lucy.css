@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Muli:600');
 
+/* color of the pulsing microphone icon */
 @-webkit-keyframes Hello-Lucy-pulse {
-    0% { color: #999; }
+    0% { color: #33FF42; }
     50% { color: #000; }
-    100% { color: #999; }
+    100% { color: #33FF42; }
 }
 
 .Hello-Lucy .pulse {
@@ -20,19 +21,28 @@
     filter: blur(4px) brightness(10%);
 }
 
+/* help screen columns and position */
 .Hello-Lucy .modal {
    columns: 4;
   -webkit-columns: 4;
   -moz-columns: 4;
    position: fixed; /* or absolute */
-  top: 40%;
-  left: 20%;
+  top: 20%;
+  left: 30%;
 }
 
+/* help screen font and color */
 .Hello-Lucy .modal ul {
     margin: 0;
     font-size: 17px;
     list-style-type: none;
-    font-family: 'Open Sans Condensed', sans-serif;
-    color: yellow;
+    font-family: Muli;
+    color: cyan;
+}
+
+/* help screen heading font and color */
+.Hello-Lucy .medium {
+    /* font-size: 17px; */
+    font-family: Muli;
+    color: #b4b1e8;
 }

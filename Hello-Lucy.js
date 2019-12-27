@@ -45,7 +45,7 @@ Module.register(ModuleName, {
 		defaultOnStartup: "Hello-Lucy",
 		keyword: "HELLO LUCY",                      // keyword to activate listening for a command/sentence
 		standByMethod: "DPMS",                      // 'DPMS' = anything else than RPi or 'PI'
-		sounds: ["a.mp3",  "b.mp3",  "c.mp3" , "d.mp3"], // welcome sounds at startup randomly choice of welcome sound
+		sounds: ["a.mp3",  "b.mp3",  "c.mp3" , "d.mp3"], // welcome sounds at startup randomly chosen
 		startHideAll: false,                        // if true, all modules start as hidden
 		microphone: "default",  // Do * NOT * change, is read from ~/.asoundrc
 		speed: 1000,                                // transition speed between show/no-show/show in milliseconds
@@ -197,11 +197,11 @@ Module.register(ModuleName, {
 
 		} else if (notification === "LISTENING") {
 			this.pulsing = true;
-	  // audible confirmation sound that Lucy is listening
-	 	var audio_files = this.config.sounds;
-	 	var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
-	 	var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
-	 	audio.play();
+	  // // audible confirmation sound that Lucy is listening
+	 	// var audio_files = this.config.sounds;
+	 	// var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+	 	// var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+	 	// audio.play();
 
 		} else if (notification === "SLEEPING") {
 			this.pulsing = false;
@@ -225,11 +225,23 @@ Module.register(ModuleName, {
 			      }
 
 		} else if (notification === "HIDE_MODULES") {
+			// audible confirmation sound that Lucy understood the command
+			var audio_files = this.config.sounds;
+			var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+			var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+			audio.play();
+
 			MM.getModules().enumerate((module) => {
 				module.hide(1000);
 			});
 
 		} else if (notification === "SHOW_MODULES") {
+			// audible confirmation sound that Lucy Lucy understood the command
+			var audio_files = this.config.sounds;
+			var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+			var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+			audio.play();
+
 			MM.getModules().enumerate((module) => {
 				module.show(1000);
 			});
@@ -238,6 +250,12 @@ Module.register(ModuleName, {
 			this.debugInformation = payload;
 
 		} else if (notification === "MODULE_STATUS") {
+			// audible confirmation sound that single or pages of modules was issued a Hide or show command
+			var audio_files = this.config.sounds;
+			var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+			var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+			audio.play();
+
 
 			var hide = MM.getModules().withClass(payload.hide);
 			hide.enumerate(function(module) {
@@ -256,24 +274,20 @@ Module.register(ModuleName, {
 		} else if (notification === "MODULE_UPDATE") {
 			this.sendNotification(payload);
 			console.log("sendNoti received :"+payload);
+
+		} else if (notification === "CLOSE_HELP") {
+			this.help = false;
+		} else if (notification === "OPEN_HELP") {
+			this.help = true;
 		}
 		this.updateDom(300);
 	},
 
 	appendHelp(appendTo) {
-		const title = document.createElement("h1");
-		title.classList.add("xsmall");
-		title.innerHTML = `${this.name} - ${this.translate("COMMAND_LIST")}`;
-		appendTo.appendChild(title);
-
-		const mode = document.createElement("div");
-		mode.classList.add("xsmall");
-		mode.innerHTML = `${this.translate("MODE")}: ${this.voice.mode}`;
-		appendTo.appendChild(mode);
-
 		const listLabel = document.createElement("div");
-		listLabel.classList.add("xsmall");
-		listLabel.innerHTML = `${this.translate("VOICE_COMMANDS")}:`;
+		listLabel.classList.add("medium");
+		// heading for help screen
+		listLabel.innerHTML = `${this.translate("Lucy Commands")}:`;
 		appendTo.appendChild(listLabel);
 
 		const list = document.createElement("ul");
