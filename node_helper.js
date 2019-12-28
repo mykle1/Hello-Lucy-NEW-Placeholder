@@ -187,12 +187,12 @@ module.exports = NodeHelper.create({
 			}
 			if (data.includes(this.config.keyword) || this.listening) {
 				// if hotword only, go directly online
-				if (this.config.onlyHotword) {
-					if(this.ps.isListening())
-					{this.ps.stop();}
-					console.log("sending socket notification, have released mic");
-					this.sendSocketNotification("SUSPENDED", {ASSISTANT:this.config.onOnlyHotword});
-				}
+				// if (this.config.onlyHotword) {
+				// 	if(this.ps.isListening())
+				// 	{this.ps.stop();}
+				// 	console.log("sending socket notification, have released mic");
+				// 	this.sendSocketNotification("SUSPENDED", {ASSISTANT:this.config.onOnlyHotword});
+				// }
 				this.listening = true;
 				this.sendSocketNotification("LISTENING");
 				if (this.timer) {
@@ -219,10 +219,10 @@ module.exports = NodeHelper.create({
 				}
 			}
 
-			this.mode="VOICE";
+			this.mode="LUCY";
 			if (this.mode) {
-				this.sendSocketNotification("VOICE", { mode: this.mode, sentence: cleanData });
-				if (this.mode === "VOICE") {
+				this.sendSocketNotification("LUCY", { mode: this.mode, sentence: cleanData });
+				if (this.mode === "LUCY") {
 					this.checkCommands(cleanData);
 				}
 			}
@@ -260,7 +260,7 @@ module.exports = NodeHelper.create({
 		return temp;
 	},
 
-	// Checks for commands of voice module. Recognized data
+	// Checks for commands of lucy module. Recognized data
 	checkCommands(data) {
 
 		if (/(PLEASE)/g.test(data) && /(WAKE)/g.test(data) && /(UP)/g.test(data)) {
@@ -283,6 +283,7 @@ module.exports = NodeHelper.create({
 		} else if (/(SHOW)/g.test(data) && /(MODULES)/g.test(data)) {
 			this.sendSocketNotification("SHOW_MODULES");
 
+      // Help screen made better by @cowboysdude
 		} else if (/(HELP)/g.test(data)) {
 			if (/(CLOSE)/g.test(data) || (this.help && !/(OPEN)/g.test(data))) {
 				this.sendSocketNotification("CLOSE_HELP");

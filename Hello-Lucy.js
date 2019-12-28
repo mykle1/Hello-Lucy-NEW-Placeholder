@@ -32,9 +32,9 @@ Module.register(ModuleName, {
 	help: false,                                    /** @member {boolean} help - Flag to switch between render help or not. */
 	timeout: null,                                  /** Done by @sdetweil to release mic from PocketSphinx */
 
-	voice: {                                        /** @member {Object} voice - Defines the default mode and commands of this module. */
-		mode: "VOICE",                                  /** @property {string} mode - Voice mode of this module. */
-		sentences: []                                   /** @property {string[]} sentences - List of voice commands of this module. */
+	lucy: {                                        /** @member {Object} lucy - Defines the default mode and commands of this module. */
+		mode: "Say, 'Hello Lucy'",                                  /** @property {string} mode - Voice mode of this module. */
+		sentences: []                                   /** @property {string[]} sentences - List of lucy commands of this module. */
 	},
 
 	modules: [],                                    /** @member {Object[]} modules - Set of all modules with mode and commands. */
@@ -67,12 +67,12 @@ Module.register(ModuleName, {
 	poweredOff: false,
 
 	start() {
-		var combinedSentences = importedSentences.concat(this.voice.sentences);
-		this.voice.sentences = combinedSentences;
+		var combinedSentences = importedSentences.concat(this.lucy.sentences);
+		this.lucy.sentences = combinedSentences;
 		Log.info(`Starting module: ${this.name}`);
 		this.mode = this.translate("INIT");
-		this.modules.push(this.voice);
-		Log.info(`${this.name} is waiting for voice command registrations.`);
+		this.modules.push(this.lucy);
+		Log.info(`${this.name} is waiting for lucy command registrations.`);
 	},
 
 	getStyles() {
@@ -90,23 +90,23 @@ Module.register(ModuleName, {
 	getDom() {
 		Log.log("lucy entered getDom")
 		const wrapper = document.createElement("div");
-		const voice = document.createElement("div");
-		voice.classList.add("small", "align-left");
+		const lucy = document.createElement("div");
+		lucy.classList.add("small", "align-left");
 
 		const icon = document.createElement("i");
 		icon.classList.add("fa", this.icon, "icon");
 		if (this.pulsing) {
 			icon.classList.add("pulse");
 		}
-		voice.appendChild(icon);
+		lucy.appendChild(icon);
 
 		const modeSpan = document.createElement("span");
 		modeSpan.innerHTML = this.mode;
-		voice.appendChild(modeSpan);
+		lucy.appendChild(modeSpan);
 		if (this.config.debug) {
 			const debug = document.createElement("div");
 			debug.innerHTML = this.debugInformation;
-			voice.appendChild(debug);
+			lucy.appendChild(debug);
 		}
 
 		const modules = document.querySelectorAll(".module");
@@ -121,14 +121,14 @@ Module.register(ModuleName, {
 		}
 
 		if (this.help) {
-			voice.classList.add(`${this.name}-blur`);
+			lucy.classList.add(`${this.name}-blur`);
 			const modal = document.createElement("div");
 			modal.classList.add("modal");
 			this.appendHelp(modal);
 			wrapper.appendChild(modal);
 		}
 
-		wrapper.appendChild(voice);
+		wrapper.appendChild(lucy);
 
 		return wrapper;
 	},
@@ -139,18 +139,27 @@ Module.register(ModuleName, {
 		if (notification === "DOM_OBJECTS_CREATED") {
 			Log.log("lucy module sending start")
 			this.sendSocketNotification("START", { config: this.config, modules: this.modules });
-		} else if (notification === "REGISTER_VOICE_MODULE") {
+		} else if (notification === "REGISTER_LUCY_MODULE") {
 			if (Object.prototype.hasOwnProperty.call(payload, "mode") && Object.prototype.hasOwnProperty.call(payload, "sentences")) {
 				this.modules.push(payload);
 		}
 		}
-
+       // randomly chosen startup greeting
 		if (notification === "DOM_OBJECTS_CREATED") {
 				 var audio_files = this.config.sounds;
 				 var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
 				 var audio = new Audio(localPath+"/sounds/"+random_file);
 				 audio.play();
 		}
+
+		if (notification === ">>> modName & sendNoti : Hello-Lucy") {
+				 var audio_files = this.config.sounds;
+				 var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
+				 var audio = new Audio(localPath+"/sounds/"+random_file);
+				 audio.play();
+		}
+
+
 
 		// @TheStigh to manage hide/show modules on startup
 		if (this.config.startHideAll) {
@@ -163,7 +172,6 @@ Module.register(ModuleName, {
 
 		if (notification === "DOM_OBJECTS_CREATED"){
 			var showOnStart = MM.getModules().withClass(self.config.pageOneModules);
-
 			showOnStart.enumerate(function(module) {
 				var callback = function(){};
 				module.show(self.config.speed, callback);
@@ -172,7 +180,6 @@ Module.register(ModuleName, {
 
 		if (notification === "DOM_OBJECTS_CREATED"){
 			var showOnStart = MM.getModules().withClass(self.config.defaultOnStartup);
-
 			showOnStart.enumerate(function(module) {
 				var callback = function(){};
 				module.show(self.config.speed, callback);
@@ -192,16 +199,11 @@ Module.register(ModuleName, {
 	socketNotificationReceived(notification, payload) {
 		if (notification === "READY") {
 			this.icon = "fa-microphone";
-			this.mode = this.translate("NO_MODE")+this.config.keyword;
+			this.mode = this.translate("NO_MODE")+ "'Hello Lucy'" // this.config.keyword;
 			this.pulsing = false;
 
 		} else if (notification === "LISTENING") {
 			this.pulsing = true;
-	  // // audible confirmation sound that Lucy is listening
-	 	// var audio_files = this.config.sounds;
-	 	// var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
-	 	// var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
-	 	// audio.play();
 
 		} else if (notification === "SLEEPING") {
 			this.pulsing = false;
@@ -209,7 +211,7 @@ Module.register(ModuleName, {
 		} else if (notification === "ERROR") {
 			this.mode = notification;
 
-		} else if (notification === "VOICE") {
+		} else if (notification === "LUCY") {
 			for (let i = 0; i < this.modules.length; i += 1) {
 				if (payload.mode === this.modules[i].mode) {
 					if (this.mode !== payload.mode) {
@@ -217,18 +219,18 @@ Module.register(ModuleName, {
 						this.sendNotification(`${notification}_MODE_CHANGED`, { old: this.mode, new: payload.mode });
 						this.mode = payload.mode;
 					}
-					if (this.mode !== "VOICE") {
+					if (this.mode !== "LUCY") {
 						this.sendNotification(`${notification}_${payload.mode}`, payload.sentence);
 					}
 					break;
 				}
-			      }
+			}
 
 		} else if (notification === "HIDE_MODULES") {
 			// audible confirmation sound that Lucy understood the command
 			var audio_files = this.config.sounds;
 			var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
-			var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+			var audio = new Audio(localPath+"/sounds/ding.mp3");
 			audio.play();
 
 			MM.getModules().enumerate((module) => {
@@ -236,10 +238,10 @@ Module.register(ModuleName, {
 			});
 
 		} else if (notification === "SHOW_MODULES") {
-			// audible confirmation sound that Lucy Lucy understood the command
+			// audible confirmation sound that Lucy understood the command
 			var audio_files = this.config.sounds;
 			var random_file = audio_files[Math.floor(Math.random() * audio_files.length)];
-			var audio = new Audio(localPath+"/sounds/ding.mp3"); //"+random_file);
+			var audio = new Audio(localPath+"/sounds/ding.mp3");
 			audio.play();
 
 			MM.getModules().enumerate((module) => {
@@ -291,10 +293,10 @@ Module.register(ModuleName, {
 		appendTo.appendChild(listLabel);
 
 		const list = document.createElement("ul");
-		for (let i = 0; i < this.voice.sentences.length; i += 1) {
+		for (let i = 0; i < this.lucy.sentences.length; i += 1) {
 			const item = document.createElement("li");
 			list.classList.add("xsmall");
-			item.innerHTML = this.voice.sentences[i];
+			item.innerHTML = this.lucy.sentences[i];
 			list.appendChild(item);
 		}
 		appendTo.appendChild(list);

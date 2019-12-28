@@ -21,14 +21,14 @@
     filter: blur(4px) brightness(10%);
 }
 
-/* help screen columns and position */
+/* help screen columns modification by @cowboysdude :-) */
 .Hello-Lucy .modal {
    columns: 4;
   -webkit-columns: 4;
   -moz-columns: 4;
-   position: fixed; /* or absolute */
-  top: 20%;
-  left: 30%;
+  position: fixed;
+  top: 200px;
+  right: -350px;
 }
 
 /* help screen font and color */

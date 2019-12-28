@@ -8,7 +8,7 @@
 * sdetweil for unwavering support, instruction, error correction and amusing commentary.
 
 ## Acknowledgements
-* cowboysdude for audio support
+* cowboysdude for inspiration, modal column magic and audio support
 * STRAWBERRY 3.141 for MMM-voice
 * TheStigh for VoiceCommander
 
